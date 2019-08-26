@@ -16,6 +16,12 @@ import tensorflow as tf
 import keras
 from keras.models import load_model
 
+#--- attempt to fix 'CUDNN_STATUS_INTERNAL_ERROR'
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tf.Session(config=config)
+#--- end attempt to fix 'CUDNN_STATUS_INTERNAL_ERROR'
+
 def create_training_instances(
     train_annot_folder,
     train_image_folder,
