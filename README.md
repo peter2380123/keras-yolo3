@@ -1,3 +1,23 @@
+## EDITS
+For some reason my local machine is now training on CPU only - tensorflow does not recognise my GPU, and the chaos it and CUDA brought to my desktop last time made me hesitant to fix this tensorflow issue.  
+For the record, CPU training took 44 mins to run 2 epochs.  
+GPU training took only 28 mins to run 2 epochs. Definitely use tensorflow-gpu. 
+
+
+To generate anchor, do:  
+```python gen_anchors.py -c config.json```   
+Make sure to have .pkl file written in config.json's cache_name field.  
+If this doesn't work, remove existing .pkl file so it can regenerate instead of trying to overwrite a half-working(broken) .pkl file.
+
+An example to train:  
+```time python train.py -c config.json```   
+This also times the process - take it out if no need.  
+
+An exmaple to predict:   
+```python predict.py -c config.json -i /home/peter/Desktop/EGH455-Adv-Sys/videos_dataset/labelled-dolphins/labelled-dolphins-vott-project-PascalVOC-export/JPEGImages/Dolphin%20-%20Ballina%202016.10.28.MP4#t\=6.5.jpg -o result/```  
+This puts it into `result/` subdirectory (image only for now, mp4 doesn't seem to work for some reason).
+
+
 # YOLO3 (Detection, Training, and Evaluation)
 
 ## Dataset and Model
