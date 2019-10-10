@@ -71,7 +71,7 @@ def _main_(args):
         batch_size  = 1
         images      = []
         start_point = 0 #%
-        show_window = False
+        show_window = False #RESET back to false
         for i in tqdm(range(nb_frames)):
             _, image = video_reader.read()
 
