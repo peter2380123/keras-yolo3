@@ -28,7 +28,7 @@
         "class_scale":          1,
 
         "tensorboard_dir":      "logs",
-	    "saved_weights_name":	"mix-kev-peter.h5",
+	    "saved_weights_name":	"combined.h5",
         "debug":                true
     },
 
