@@ -17,6 +17,10 @@ An exmaple to predict:
 ```python predict.py -c config.json -i /home/peter/Desktop/EGH455-Adv-Sys/videos_dataset/labelled-dolphins/labelled-dolphins-vott-project-PascalVOC-export/JPEGImages/Dolphin%20-%20Ballina%202016.10.28.MP4#t\=6.5.jpg -o result/```  
 This puts it into `result/` subdirectory (image only for now, mp4 doesn't seem to work for some reason).
 
+To view log file using tensorboard and see loss functions:  
+```tensorboard --logdir {LOG_DIR}```  
+Ensure only one event file is present in this directory.  
+Use the provided localhost @ given port to open browser webpage.   
 
 # YOLO3 (Detection, Training, and Evaluation)
 
