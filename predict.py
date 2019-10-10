@@ -11,9 +11,9 @@ from tqdm import tqdm
 import numpy as np
 
 def _main_(args):
-    config_path  = args.conf
+    config_path  = "config.json"
     input_path   = args.input
-    output_path  = args.output
+    output_path  = "result/"
 
     with open(config_path) as config_buffer:    
         config = json.load(config_buffer)
@@ -71,7 +71,7 @@ def _main_(args):
         batch_size  = 1
         images      = []
         start_point = 0 #%
-        show_window = False #RESET back to false
+        show_window = False
         for i in tqdm(range(nb_frames)):
             _, image = video_reader.read()
 
@@ -124,9 +124,7 @@ def _main_(args):
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Predict with a trained yolo model')
-    argparser.add_argument('-c', '--conf', help='path to configuration file')
     argparser.add_argument('-i', '--input', help='path to an image, a directory of images, a video, or webcam')    
-    argparser.add_argument('-o', '--output', default='output/', help='path to output directory')   
     
     args = argparser.parse_args()
     _main_(args)
