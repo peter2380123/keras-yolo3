@@ -3,20 +3,20 @@
 	    "architecture":		    "Tiny Yolo",
         "min_input_size":       288,
         "max_input_size":       448,
-        "anchors":              [2,16, 3,17, 4,15, 6,14, 7,8, 8,11, 8,5, 9,20, 10,8],
-        "labels":               ["dolphin"]
+        "anchors":              [3,16, 5,17, 7,12, 9,7, 11,30, 12,17, 18,61, 27,27, 31,80],
+        "labels":               ["dolphin", "human", "shark"]
     },
 
     "train": {
-        "train_image_folder":   "/home/peter/Desktop/EGH455-Adv-Sys/videos_dataset/labelled-dolphins/labelled-dolphins-vott-project-PascalVOC-export/JPEGImages/",
-        "train_annot_folder":   "/home/peter/Desktop/EGH455-Adv-Sys/videos_dataset/labelled-dolphins/labelled-dolphins-vott-project-PascalVOC-export/Annotations/",
-        "cache_name":           "dolphin_train.pkl",
+        "train_image_folder":   "/media/peter/Large SSD Storage/kevin-peter-labelled/combined-Labelled/EGH455---Dolphin-PascalVOC-export/JPEGImages/",
+        "train_annot_folder":   "/media/peter/Large SSD Storage/kevin-peter-labelled/combined-Labelled/EGH455---Dolphin-PascalVOC-export/Annotations/",
+        "cache_name":           "mix-kev-peter_train.pkl",
 
 	    "pretrained_weights":	"",
         "train_times":          8,
         "batch_size":           3,
         "learning_rate":        1e-4,
-        "nb_epochs":            1,
+        "nb_epochs":            9,
         "warmup_epochs":        1,
         "ignore_thresh":        0.5,
         "gpus":                 "0",
@@ -28,7 +28,7 @@
         "class_scale":          1,
 
         "tensorboard_dir":      "logs",
-	    "saved_weights_name":	"dolphin.h5",
+	    "saved_weights_name":	"mix-kev-peter.h5",
         "debug":                true
     },
 
