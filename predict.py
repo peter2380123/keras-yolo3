@@ -24,7 +24,7 @@ def _main_(args):
     #   Set some parameter
     ###############################       
     net_h, net_w = 416, 416 # a multiple of 32, the smaller the faster
-    obj_thresh, nms_thresh = 0.5, 0.45
+    obj_thresh, nms_thresh = 0.7, 0.25 #default is 0.5 and 0.45
 
     ###############################
     #   Load the model
@@ -55,7 +55,7 @@ def _main_(args):
             if cv2.waitKey(1) == 27: 
                 break  # esc to quit
         cv2.destroyAllWindows()        
-    elif input_path[-4:] == '.mp4': # do detection on a video  
+    elif input_path[-4:] == '.mp4' or input_path[-4:] == '.MP4': # do detection on a video  
         video_out = output_path + input_path.split('/')[-1]
         video_reader = cv2.VideoCapture(input_path)
 
