@@ -79,7 +79,7 @@ def _main_(filename):
         start_point = 0 #%
         show_window = False
         with open('temp_csv.csv', mode='w') as csv_file:
-            fields = ['FrameNumber', 'PredictionString']
+            fields = ['FrameNumber', 'PredictionString (class,conf,xmin,ymin,xmax,ymax)']
             writer = csv.DictWriter(csv_file, fieldnames=fields)
             writer.writeheader()
 
@@ -98,7 +98,7 @@ def _main_(filename):
                             # draw bounding boxes on the image using labels
                             _, info = draw_boxes(images[i], batch_boxes[i], config['model']['labels'], obj_thresh, True, curr_frame)   
                             splitted = info.split(' ', 1) # split only on the first occurrence of space
-                            writer.writerow({'FrameNumber':splitted[0], 'PredictionString':splitted[1]})
+                            writer.writerow({'FrameNumber':splitted[0], 'PredictionString (class,conf,xmin,ymin,xmax,ymax)':splitted[1]})
 
                             # show the video with detection bounding boxes          
                             if show_window: cv2.imshow('video with bboxes', images[i])  
