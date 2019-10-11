@@ -10,9 +10,11 @@ from keras.models import load_model
 from tqdm import tqdm
 import numpy as np
 
-def _main_(args):
+#def _main_(args):
+def _main_(filename):
     config_path  = "config.json"
-    input_path   = args.input
+    #input_path   = args.input
+    input_path = filename
     output_path  = "result/"
 
     with open(config_path) as config_buffer:    
