@@ -10,6 +10,8 @@ from keras.models import load_model
 from tqdm import tqdm
 import numpy as np
 
+import csv # to write csv output
+
 #def _main_(args):
 def _main_(filename):
     config_path  = "config.json"
@@ -43,15 +45,17 @@ def _main_(filename):
         # the main loop
         batch_size  = 1
         images      = []
+        curr_frame = 0
         while True:
             ret_val, image = video_reader.read()
             if ret_val == True: images += [image]
+            curr_frame += 1
 
             if (len(images)==batch_size) or (ret_val==False and len(images)>0):
                 batch_boxes = get_yolo_boxes(infer_model, images, net_h, net_w, config['model']['anchors'], obj_thresh, nms_thresh)
 
                 for i in range(len(images)):
-                    draw_boxes(images[i], batch_boxes[i], config['model']['labels'], obj_thresh) 
+                    draw_boxes(images[i], batch_boxes[i], config['model']['labels'], obj_thresh, True, curr_frame) 
                     cv2.imshow('video with bboxes', images[i])
                 images = []
             if cv2.waitKey(1) == 27: 
@@ -74,31 +78,40 @@ def _main_(filename):
         images      = []
         start_point = 0 #%
         show_window = False
-        for i in tqdm(range(nb_frames)):
-            _, image = video_reader.read()
+        with open('temp_csv.csv', mode='w') as csv_file:
+            fields = ['FrameNumber', 'PredictionString']
+            writer = csv.DictWriter(csv_file, fieldnames=fields)
+            writer.writeheader()
 
-            if (float(i+1)/nb_frames) > start_point/100.:
-                images += [image]
+            for i in tqdm(range(nb_frames)):
+                curr_frame = i+1 # so first frame is named frame 1 not frame 0
+                _, image = video_reader.read()
 
-                if (i%batch_size == 0) or (i == (nb_frames-1) and len(images) > 0):
-                    # predict the bounding boxes
-                    batch_boxes = get_yolo_boxes(infer_model, images, net_h, net_w, config['model']['anchors'], obj_thresh, nms_thresh)
+                if (float(i+1)/nb_frames) > start_point/100.:
+                    images += [image]
 
-                    for i in range(len(images)):
-                        # draw bounding boxes on the image using labels
-                        draw_boxes(images[i], batch_boxes[i], config['model']['labels'], obj_thresh)   
+                    if (i%batch_size == 0) or (i == (nb_frames-1) and len(images) > 0):
+                        # predict the bounding boxes
+                        batch_boxes = get_yolo_boxes(infer_model, images, net_h, net_w, config['model']['anchors'], obj_thresh, nms_thresh)
 
-                        # show the video with detection bounding boxes          
-                        if show_window: cv2.imshow('video with bboxes', images[i])  
+                        for i in range(len(images)):
+                            # draw bounding boxes on the image using labels
+                            _, info = draw_boxes(images[i], batch_boxes[i], config['model']['labels'], obj_thresh, True, curr_frame)   
+                            splitted = info.split(' ', 1) # split only on the first occurrence of space
+                            writer.writerow({'FrameNumber':splitted[0], 'PredictionString':splitted[1]})
 
-                        # write result to the output video
-                        video_writer.write(images[i]) 
-                    images = []
-                if show_window and cv2.waitKey(1) == 27: break  # esc to quit
+                            # show the video with detection bounding boxes          
+                            if show_window: cv2.imshow('video with bboxes', images[i])  
 
-        if show_window: cv2.destroyAllWindows()
-        video_reader.release()
-        video_writer.release()       
+                            # write result to the output video
+                            video_writer.write(images[i]) 
+                        images = []
+                    if show_window and cv2.waitKey(1) == 27: break  # esc to quit
+
+            if show_window: cv2.destroyAllWindows()
+            video_reader.release()
+            video_writer.release()      
+        # end open csv 
     else: # do detection on an image or a set of images
         image_paths = []
 
@@ -119,8 +132,8 @@ def _main_(filename):
             boxes = get_yolo_boxes(infer_model, [image], net_h, net_w, config['model']['anchors'], obj_thresh, nms_thresh)[0]
 
             # draw bounding boxes on the image using labels
-            draw_boxes(image, boxes, config['model']['labels'], obj_thresh) 
-     
+            _, info = draw_boxes(image, boxes, config['model']['labels'], obj_thresh) 
+
             # write the image with bounding boxes to file
             cv2.imwrite(output_path + image_path.split('/')[-1], np.uint8(image))         
 
