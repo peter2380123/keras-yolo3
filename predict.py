@@ -78,7 +78,9 @@ def _main_(filename):
         images      = []
         start_point = 0 #%
         show_window = False
-        with open('temp_csv.csv', mode='w') as csv_file:
+        f_name_extract = filename.split('/')
+        csv_path = output_path + f_name_extract[len(f_name_extract)-1] + '.csv'
+        with open(csv_path, mode='w') as csv_file:
             fields = ['FrameNumber', 'PredictionString (class,conf,xmin,ymin,xmax,ymax)']
             writer = csv.DictWriter(csv_file, fieldnames=fields)
             writer.writeheader()
