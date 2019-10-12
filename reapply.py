@@ -19,11 +19,6 @@ def _main_(video_path, csv_path):
   makedirs(output_path)
 
   ###############################
-  #   Set some parameter
-  ###############################       
-  net_h, net_w = 416, 416 # a multiple of 32, the smaller the faster
-
-  ###############################
   #   Predict bounding boxes 
   ###############################
   if input_path[-4:] == '.mp4' or input_path[-4:] == '.MP4': # do detection on a video  
@@ -68,9 +63,14 @@ def _main_(video_path, csv_path):
 
             lab_colors = ["dolphin", "human", "shark"]
             obj_color = lab_colors.index(label)
+            
+            xmin = round(float(box_info[2])*imgw)
+            xmax = round(float(box_info[4])*imgw)
+            ymin = round(float(box_info[3])*imgh)
+            ymax = round(float(box_info[5])*imgh)
 
-            xmin, ymin = round(float(box_info[2])*imgw), round(float(box_info[3])*imgh)
-            xmax, ymax = round(float(box_info[4])*imgw), round(float(box_info[5])*imgh)
+            #xmin, ymin = round(float(box_info[2])*imgw), round(float(box_info[3])*imgh)
+            #xmax, ymax = round(float(box_info[4])*imgw), round(float(box_info[5])*imgh)
 
             label_str = label + ' ' + conf
 
